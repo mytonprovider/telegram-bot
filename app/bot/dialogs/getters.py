@@ -56,6 +56,7 @@ async def stats_menu(
     ctx = get_context()
     started_at = getattr(ctx, "started_at", None)
     stats["bot_started_at"] = int(started_at) if started_at is not None else None
+    stats.update(getattr(ctx, "repo_info", None) or {})
 
     return {"stats": stats}
 
