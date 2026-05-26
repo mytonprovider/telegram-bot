@@ -75,6 +75,7 @@ def _build_notifications(
             new_by_key[key].bag_id
         )
 
+    # removed-уведомления временно отключены
     removed_by_provider: dict[str, list[str]] = defaultdict(list)
     for key in diff.confirmed_missing:
         removed_by_provider[old_by_key[key].provider_pubkey].append(
@@ -85,11 +86,13 @@ def _build_notifications(
     all_pubkeys = set(added_by_provider.keys()) | set(removed_by_provider.keys())
     for pubkey in all_pubkeys:
         added = sorted(added_by_provider.get(pubkey, []))
-        removed = sorted(removed_by_provider.get(pubkey, []))
-        if added or removed:
+        # removed = sorted(removed_by_provider.get(pubkey, []))
+        # if added or removed:
+        if added:
             notifications[pubkey] = {
                 "added": added,
-                "removed": removed,
+                # "removed": removed,
+                "removed": [],
                 "failed": [],
                 "recovered": [],
             }
