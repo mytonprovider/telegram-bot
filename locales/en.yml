@@ -42,8 +42,22 @@ messages:
       🧩 <b>Provider git hash versions</b><br>
       {% for h, c in stats.provider_git_hashes|dictsort(by='value', reverse=True) %}
       • <code>{{ h }}</code> — providers: <code>{{ c }}</code><br>
-      {% endfor %}
-      <br>Started: <code>{{ stats.bot_started_at|datetimeformat }}</code> ({{ stats.bot_started_at|ago }})
+      {% endfor %}<br>
+
+      🤖 <b>Bot</b><br>
+      • Started: <code>{{ stats.bot_started_at|datetimeformat }}</code> ({{ stats.bot_started_at|ago }})<br>
+      {%- if stats.repo_author %}
+      • Author: <a href="https://github.com/{{ stats.repo_author }}">{{ stats.repo_author }}</a><br>
+      {%- endif %}
+      {%- if stats.repo_url and stats.repo_name %}
+      • Repository: <a href="{{ stats.repo_url }}">{{ stats.repo_name }}</a><br>
+      {%- endif %}
+      {%- if stats.repo_branch %}
+      • Branch: <code>{{ stats.repo_branch }}</code><br>
+      {%- endif %}
+      {%- if stats.repo_hash %}
+      • Version: <code>{{ stats.repo_hash }}</code>
+      {%- endif %}
 
   alert_settings:
     types_menu: |

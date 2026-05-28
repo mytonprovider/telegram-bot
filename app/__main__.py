@@ -15,8 +15,9 @@ from .api.mytonprovider import MytonproviderClient
 from .api.toncenter import ToncenterClient
 from .bot import commands, middlewares, handlers, dialogs
 from .bot.broadcaster import Broadcaster
+from .bot.utils.git import get_repo_info
 from .bot.utils.i18n import I18N
-from .config import BOT_TOKEN, REDIS_URL
+from .config import BASE_DIR, BOT_TOKEN, REDIS_URL
 from .context import Context, set_context
 from .database.database import Database
 from .logging import setup_logging
@@ -30,6 +31,7 @@ async def on_startup(ctx: Context) -> None:
     logger.info("App startup initiated...")
 
     ctx.started_at = time.time()
+    ctx.repo_info = get_repo_info(str(BASE_DIR.parent))
     await ctx.db.start()
     await ctx.scheduler.start()
 
