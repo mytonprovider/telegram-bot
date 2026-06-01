@@ -4,7 +4,6 @@ from aiogram_dialog import DialogManager, ShowMode
 
 from . import states
 from ..utils import generate_passwd_hash, is_valid_pubkey
-from ...config import ADMIN_IDS, ADMIN_PASSWORD
 from ...database.models import UserModel, UserSubscriptionModel
 from ...database.unitofwork import UnitOfWork
 
@@ -53,13 +52,8 @@ async def enter_password(
     pubkey = manager.dialog_data.get("provider_pubkey")
     telemetry = await uow.telemetry.get(provider_pubkey=pubkey)
     telemetry_pass = telemetry.telemetry_pass if telemetry else None
-
-    if user.user_id in ADMIN_IDS and message.text.lower() == ADMIN_PASSWORD:
-        password_ok = True
-        user_telemetry_pass = telemetry_pass
-    else:
-        user_telemetry_pass = generate_passwd_hash(message.text)
-        password_ok = user_telemetry_pass == telemetry_pass
+    user_telemetry_pass = generate_passwd_hash(message.text)
+    password_ok = user_telemetry_pass == telemetry_pass
 
     if not password_ok:
         manager.dialog_data["incorrect_password"] = True
